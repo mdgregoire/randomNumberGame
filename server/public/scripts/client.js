@@ -5,7 +5,7 @@ class Player{
     this.guess = guess,
     this.prevGuess = prevGuess
   }
-}
+}//end player construction
 
 let rando;
 let counter = 0;
@@ -34,7 +34,6 @@ function onReady(){
   $('#playGameButton').on('click', guessesSubmitted);
   $('#cancel').on('click', cancel);
   $('#feedback').on('click', '#restart', cancel);
-
 } //end onReady
 
 function playGame(response){
@@ -42,11 +41,7 @@ function playGame(response){
    maxNumber = $('#maxSelect').val();
    $('#maxRemind').empty();
    $('#maxRemind').append(maxNumber);
-
-  console.log('in playgame function', response);
-  // ourRandomNumber = response.ourRandomNumber;
-  // console.log(ourRandomNumber);
-}
+}//end playgame function
 
 function guessesSubmitted(){
   counter ++;
@@ -68,19 +63,18 @@ function guessesSubmitted(){
   }); // end .ajax post
 }//end guessesSubmitted
 
-
-
 function printDifferences(differences){
+  //sets value equal to difference
   let p1comparison = differences.p1;
   let p2comparison = differences.p2;
   let p3comparison = differences.p3;
   let p4comparison = differences.p4;
 
-$('#feedback').empty();
-$('#p1').val('');
-$('#p2').val('');
-$('#p3').val('');
-$('#p4').val('');
+    $('#feedback').empty();
+    $('#p1').val('');
+    $('#p2').val('');
+    $('#p3').val('');
+    $('#p4').val('');
 
 if(p1comparison == 0){
   $('#feedback').append('<div>Player 1 WINS!!!</div>');
@@ -124,9 +118,7 @@ if (p1comparison == 0 || p2comparison == 0 || p3comparison == 0 || p4comparison 
 }
 }//end printDifferences
 
-
 function cancel(){
-
   $('#feedback').empty();
   $('#p1').val('');
   $('#p2').val('');
@@ -135,8 +127,5 @@ function cancel(){
   $('#guesses').empty().append('0');
   $('#playGame').hide();
   $('#setUpGame').show();
-
   counter = 0;
-
-
 }//end cancel
