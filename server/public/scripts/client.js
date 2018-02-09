@@ -33,6 +33,7 @@ function onReady(){
 
   $('#playGameButton').on('click', guessesSubmitted);
   $('#cancel').on('click', cancel);
+  $('#feedback').on('click', '#restart', cancel);
 
 } //end onReady
 
@@ -116,6 +117,10 @@ else if (p4comparison > 0){
 }
 else {
   $('#feedback').append('<div>Player 4 Guessed too low</div>');
+}
+
+if (p1comparison == 0 || p2comparison == 0 || p3comparison == 0 || p4comparison == 0 ){
+  $('#feedback').append("<button id='restart'>Restart</button> ");
 }
 }//end printDifferences
 
