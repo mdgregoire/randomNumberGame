@@ -10,16 +10,15 @@ class Player{
 let rando;
 let counter = 0;
 let players = [];
-let player1 = new Player ('None','None');
-let player2 = new Player ('None','None');
-let player3 = new Player ('None','None');
-let player4 = new Player ('None','None');
+let maxNumber;
+
 
 function onReady(){
   $('#playGame').hide();
   $('#setUpGameButton').on('click', function(event){
     event.preventDefault();
-    let maxNumber = $('#maxSelect').val();
+    maxNumber = $('#maxSelect').val();
+
     $.ajax({
       type: 'POST',
       url: '/random',
@@ -30,17 +29,18 @@ function onReady(){
     }).fail(function(response){
       console.log('We suck', response);
     }); // end .ajax post
-  }) // end onClick
+  });// end onClick
 
   $('#playGameButton').on('click', guessesSubmitted);
-
-
-
+  $('#cancel').on('click', cancel);
 
 } //end onReady
 
 function playGame(response){
    $('#playGame').show();
+   maxNumber = $('#maxSelect').val();
+   $('#maxRemind').empty();
+   $('#maxRemind').append(maxNumber);
 
   console.log('in playgame function', response);
   // ourRandomNumber = response.ourRandomNumber;
@@ -48,6 +48,9 @@ function playGame(response){
 }
 
 function guessesSubmitted(){
+  counter ++;
+  $('#guesses').empty();
+  $('#guesses').text(counter);
   $.ajax({
     type: 'POST',
     url: '/random/compare',
@@ -73,6 +76,10 @@ function printDifferences(differences){
   let p4comparison = differences.p4;
 
 $('#feedback').empty();
+$('#p1').val('');
+$('#p2').val('');
+$('#p3').val('');
+$('#p4').val('');
 
 if(p1comparison == 0){
   $('#feedback').append('<div>Player 1 WINS!!!</div>');
@@ -111,3 +118,20 @@ else {
   $('#feedback').append('<div>Player 4 Guessed too low</div>');
 }
 }//end printDifferences
+
+
+function cancel(){
+
+  $('#feedback').empty();
+  $('#p1').val('');
+  $('#p2').val('');
+  $('#p3').val('');
+  $('#p4').val('');
+  $('#guesses').empty().append('0');
+  $('#playGame').hide();
+  $('#setUpGame').show();
+
+  counter = 0;
+
+
+}//end cancel
