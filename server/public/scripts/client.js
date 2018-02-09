@@ -34,7 +34,7 @@ function onReady(){
 } //end onReady
 
 function playGame(response){
-  // $('#playGame').show();
+   $('#playGame').show();
   // $.ajax({
   //   type:'GET',
   //   url:'/random'

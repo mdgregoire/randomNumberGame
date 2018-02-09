@@ -8,7 +8,7 @@ app.use ( bodyParser.urlencoded({extended:true}));
 
 const randomRouter = require('./router/randomRouter');
 app.use('/random',randomRouter);
-console.log('in server.js',randomRouter.ourRandomNumber);
+//console.log('in server.js',randomRouter.ourRandomNumber);
 
 const port = 5000;
 app.listen(port, function(){
