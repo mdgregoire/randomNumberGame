@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Random Number Game</title>
+    <script src="./vendors/jQuery_min_3_3_1.js" charset="utf-8"></script>
+    <script src="./scripts/client.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="styles/style.css">
+  </head>
+  <body>
+    <h1>Do You Want to Play a Game?</h1>
+    <section id=setUpGame>
+      <form id=setUpGameForm>
+        <button id=setUpGameButton>Play Game</button>
+        <select id=maxSelect>
+          <option value=10>10</option>
+          <option value=100>100</option>
+          <option value=1000>1000</option>
+        </select>
+      </form>
+    </section>
+    <section id=playGame>
+      <input type="number" class="inputField" id="p1" placeholder="Player 1">
+      <input type="number" class="inputField" id="p2" placeholder="Player 2">
+      <input type="number" class="inputField" id="p3" placeholder="Player 3">
+      <input type="number" class="inputField" id="p4" placeholder="Player 4">
+      <button id=playGameButton>Submit</button>
+      <button id=cancel>Cancel</button>
+    </section>
+  </body>
+</html>
