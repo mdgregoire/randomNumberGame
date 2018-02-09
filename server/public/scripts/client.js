@@ -44,4 +44,6 @@ function playGame(response){
   //   console.log('we all suck!', rando);
   // });
   console.log('in playgame function', response);
+  ourRandomNumber = response.ourRandomNumber;
+  console.log(ourRandomNumber);
 }
