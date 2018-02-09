@@ -43,8 +43,8 @@ function playGame(response){
    $('#playGame').show();
 
   console.log('in playgame function', response);
-  ourRandomNumber = response.ourRandomNumber;
-  console.log(ourRandomNumber);
+  // ourRandomNumber = response.ourRandomNumber;
+  // console.log(ourRandomNumber);
 }
 
 function guessesSubmitted(){
@@ -57,7 +57,8 @@ function guessesSubmitted(){
             p4: $('#p4').val(),
           }
   }).done(function(response){
-    printDifferences(responses);
+    console.log(response, 'response');
+    printDifferences(response);
   }).fail(function(response){
     console.log('We suck guessesSubmitted', response);
   }); // end .ajax post
@@ -71,7 +72,7 @@ function printDifferences(differences){
   let p3comparison = differences.p3;
   let p4comparison = differences.p4;
 
-$('#feedback').empty()
+$('#feedback').empty();
 
 if(p1comparison == 0){
   $('#feedback').append('<div>Player 1 WINS!!!</div>');
