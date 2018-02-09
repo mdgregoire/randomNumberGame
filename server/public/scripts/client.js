@@ -40,27 +40,44 @@ function playGame(response){
    $('#playGame').show();
    maxNumber = $('#maxSelect').val();
    $('#maxRemind').empty();
-   $('#maxRemind').append(maxNumber);
+   $('#maxRemind').append(`Max Number: ${maxNumber}`);
 }//end playgame function
 
 function guessesSubmitted(){
-  counter ++;
-  $('#guesses').empty();
-  $('#guesses').text(counter);
-  $.ajax({
-    type: 'POST',
-    url: '/random/compare',
-    data: { p1: $('#p1').val(),
-            p2: $('#p2').val(),
-            p3: $('#p3').val(),
-            p4: $('#p4').val(),
-          }
-  }).done(function(response){
-    console.log(response, 'response');
-    printDifferences(response);
-  }).fail(function(response){
-    console.log('We suck guessesSubmitted', response);
-  }); // end .ajax post
+    if ($('#p1').val() == $('#p2').val() || $('#p1').val() == $('#p3').val() || $('#p1').val() == $('#p4').val()){
+      alert("Error! Guesses Cannot Match!");
+    }//end if check for p1
+    else if ($('#p2').val() == $('#p3').val() || $('#p2').val() == $('#p4').val()){
+      alert("Error! Guesses Cannot Match!");
+    }//end if check for p2
+    else if ($('#p3').val() == $('#p4').val() ){
+      alert("Error! Guesses Cannot Match!");
+    }
+    else{
+
+    if ($('#p1').val() <= maxNumber || $('#p2').val() <= maxNumber || $('#p3').val() <= maxNumber || $('#p4').val() <= maxNumber){
+      counter ++;
+      $('#guesses').empty();
+      $('#guesses').text(`Number of Guesses: ${counter}`);
+      $.ajax({
+        type: 'POST',
+        url: '/random/compare',
+        data: { p1: $('#p1').val(),
+                p2: $('#p2').val(),
+                p3: $('#p3').val(),
+                p4: $('#p4').val(),
+              }
+      }).done(function(response){
+        console.log(response, 'response');
+        printDifferences(response);
+      }).fail(function(response){
+        console.log('We suck guessesSubmitted', response);
+      }); // end .ajax post
+    }//end overmax check if
+    else {
+      alert("Error! Guesses Cannot Be Over MAX!");
+    }
+    }//end else check for duplicates
 }//end guessesSubmitted
 
 function printDifferences(differences){
@@ -75,6 +92,10 @@ function printDifferences(differences){
     $('#p2').val('');
     $('#p3').val('');
     $('#p4').val('');
+
+
+
+
 
 if(p1comparison == 0){
   $('#feedback').append('<div>Player 1 WINS!!!</div>');
@@ -124,7 +145,7 @@ function cancel(){
   $('#p2').val('');
   $('#p3').val('');
   $('#p4').val('');
-  $('#guesses').empty().append('0');
+  $('#guesses').empty().append('Number of Guesses: 0');
   $('#playGame').hide();
   $('#setUpGame').show();
   counter = 0;
