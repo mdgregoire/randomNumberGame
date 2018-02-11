@@ -3,7 +3,7 @@ $(document).ready(onReady);
 class Player{
   constructor(guess, prevGuess){
     this.guess = guess,
-    this.prevGuess = prevGuess
+    this.prevGuess = prevGuess;
   }
 }//end player construction
 
@@ -54,8 +54,9 @@ function guessesSubmitted(){
       alert("Error! Guesses Cannot Match!");
     }
     else{
+      console.log(maxNumber);
 
-    if ($('#p1').val() <= maxNumber || $('#p2').val() <= maxNumber || $('#p3').val() <= maxNumber || $('#p4').val() <= maxNumber){
+    // if (($('#p1').val() <= maxNumber) || ($('#p2').val() <= maxNumber) || ($('#p3').val() <= maxNumber) || ($('#p4').val() <= maxNumber)){
       counter ++;
       $('#guesses').empty();
       $('#guesses').text(`Number of Guesses: ${counter}`);
@@ -73,10 +74,10 @@ function guessesSubmitted(){
       }).fail(function(response){
         console.log('We suck guessesSubmitted', response);
       }); // end .ajax post
-    }//end overmax check if
-    else {
-      alert("Error! Guesses Cannot Be Over MAX!");
-    }
+    //}//end overmax check if
+    //else {
+      //alert("Error! Guesses Cannot Be Over MAX!");
+    //}//end else check for over max
     }//end else check for duplicates
 }//end guessesSubmitted
 
