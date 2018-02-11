@@ -1,62 +1,41 @@
-$(document).ready(onReady);
-
-class Player{
-  constructor(guess, prevGuess){
-    this.guess = guess,
-    this.prevGuess = prevGuess;
-  }
-}//end player construction
-
-let rando;
 let counter = 0;
-let players = [];
 let maxNumber;
 
+$(document).ready(onReady);
 
 function onReady(){
   $('#playGame').hide();
-  $('#setUpGameButton').on('click', function(event){
+  $('#playGameButton').on('click', function(event){
     event.preventDefault();
     maxNumber = $('#maxSelect').val();
-
-    $.ajax({
-      type: 'POST',
-      url: '/random',
-      data: {max: maxNumber}
-    }).done(function(response){
-      $('#setUpGame').hide();
-      playGame(response);
-    }).fail(function(response){
-      console.log('We suck', response);
-    }); // end .ajax post
-  });// end onClick
-
-  $('#playGameButton').on('click', guessesSubmitted);
+    setUpGame();
+  });// end onClick setUpGameButton
+  $('#submitGuessesButton').on('click', guessesSubmitted);
   $('#cancel').on('click', cancel);
   $('#feedback').on('click', '#restart', cancel);
 } //end onReady
 
-function playGame(response){
-   $('#playGame').show();
-   maxNumber = $('#maxSelect').val();
-   $('#maxRemind').empty();
-   $('#maxRemind').append(`Max Number: ${maxNumber}`);
-}//end playgame function
+function cancel(){
+  $('#feedback').empty();
+  $('.inputField').val('');
+  $('#guesses').empty().append('Number of Guesses: 0');
+  $('#playGame').hide();
+  $('#setUpGame').show();
+  counter = 0;
+}//end cancel
 
 function guessesSubmitted(){
-    if ($('#p1').val() == $('#p2').val() || $('#p1').val() == $('#p3').val() || $('#p1').val() == $('#p4').val()){
-      alert("Error! Guesses Cannot Match!");
-    }//end if check for p1
-    else if ($('#p2').val() == $('#p3').val() || $('#p2').val() == $('#p4').val()){
-      alert("Error! Guesses Cannot Match!");
-    }//end if check for p2
-    else if ($('#p3').val() == $('#p4').val() ){
-      alert("Error! Guesses Cannot Match!");
-    }
-    else{
-      console.log(maxNumber);
-
-    // if (($('#p1').val() <= maxNumber) || ($('#p2').val() <= maxNumber) || ($('#p3').val() <= maxNumber) || ($('#p4').val() <= maxNumber)){
+  if ($('#p1').val() == $('#p2').val() || $('#p1').val() == $('#p3').val() || $('#p1').val() == $('#p4').val()){
+    alert("Error! Guesses Cannot Match!");
+  }//end if check for p1
+  else if ($('#p2').val() == $('#p3').val() || $('#p2').val() == $('#p4').val()){
+    alert("Error! Guesses Cannot Match!");
+  }//end if check for p2
+  else if ($('#p3').val() == $('#p4').val() ){
+    alert("Error! Guesses Cannot Match!");
+  }//end if check for p3 & p4 match
+  else{ //if the numbers are under the max the code below will run
+    if ( parseInt($('#p1').val()) <= maxNumber && parseInt($('#p2').val()) <= maxNumber && parseInt($('#p3').val()) <= maxNumber && parseInt($('#p4').val()) <= maxNumber ){
       counter ++;
       $('#guesses').empty();
       $('#guesses').text(`Number of Guesses: ${counter}`);
@@ -69,85 +48,75 @@ function guessesSubmitted(){
                 p4: $('#p4').val(),
               }
       }).done(function(response){
-        console.log(response, 'response');
+        console.log(response, 'response from guesses submitted post');
         printDifferences(response);
       }).fail(function(response){
         console.log('We suck guessesSubmitted', response);
       }); // end .ajax post
-    //}//end overmax check if
-    //else {
-      //alert("Error! Guesses Cannot Be Over MAX!");
-    //}//end else check for over max
-    }//end else check for duplicates
+    }//end over max check if
+    else {
+      alert("Error! Guesses Cannot Be Over MAX!");
+    }//end else check for over max
+  }//end else check for duplicates
 }//end guessesSubmitted
 
-function printDifferences(differences){
-  //sets value equal to difference
-  let p1comparison = differences.p1;
-  let p2comparison = differences.p2;
-  let p3comparison = differences.p3;
-  let p4comparison = differences.p4;
+function playGame(response){
+   $('#playGame').show();
+   maxNumber = $('#maxSelect').val();
+   $('#maxRemind').empty();
+   $('#maxRemind').append(`Max Number: ${maxNumber}`);
+}//end playgame function
 
+function printDifferences(differences){
+    //emptys the inputs and feedback after a guess
     $('#feedback').empty();
     $('#p1').val('');
     $('#p2').val('');
     $('#p3').val('');
     $('#p4').val('');
 
-
-
-
-
-if(p1comparison == 0){
-  $('#feedback').append('<div>Player 1 WINS!!!</div>');
-}
-else if (p1comparison > 0){
-  $('#feedback').append('<div>Player 1 Guessed too high</div>');
-}
-else {
-  $('#feedback').append('<div>Player 1 Guessed too low</div>');
-}
-if(p2comparison == 0){
-  $('#feedback').append('<div>Player 2 WINS!!!</div>');
-}
-else if (p2comparison > 0){
-  $('#feedback').append('<div>Player 2 Guessed too high</div>');
-}
-else {
-  $('#feedback').append('<div>Player 2 Guessed too low</div>');
-}
-if(p3comparison == 0){
-  $('#feedback').append('<div>Player 3 WINS!!!</div>');
-}
-else if (p3comparison > 0){
-  $('#feedback').append('<div>Player 3 Guessed too high</div>');
-}
-else {
-  $('#feedback').append('<div>Player 3 Guessed too low</div>');
-}
-if(p4comparison == 0){
-  $('#feedback').append('<div>Player 4 WINS!!!</div>');
-}
-else if (p4comparison > 0){
-  $('#feedback').append('<div>Player 4 Guessed too high</div>');
-}
-else {
-  $('#feedback').append('<div>Player 4 Guessed too low</div>');
-}
-
-if (p1comparison == 0 || p2comparison == 0 || p3comparison == 0 || p4comparison == 0 ){
-  $('#feedback').append("<button id='restart'>Restart</button> ");
-}
+  if(differences.p1 == 0){
+    $('#feedback').append('<div>Player 1 WINS!!!</div>');}
+    else if (differences.p1 > 0){
+    $('#feedback').append('<div>Player 1 Guessed too high</div>');}
+    else {
+    $('#feedback').append('<div>Player 1 Guessed too low</div>');}
+  //end p1 check guess    
+  if(differences.p2 == 0){
+    $('#feedback').append('<div>Player 2 WINS!!!</div>');}
+    else if (differences.p2 > 0){
+    $('#feedback').append('<div>Player 2 Guessed too high</div>');}
+    else {
+    $('#feedback').append('<div>Player 2 Guessed too low</div>');}
+  //end p2 check guess
+  if(differences.p3 == 0){
+    $('#feedback').append('<div>Player 3 WINS!!!</div>');}
+    else if (differences.p3 > 0){
+    $('#feedback').append('<div>Player 3 Guessed too high</div>');}
+    else {
+    $('#feedback').append('<div>Player 3 Guessed too low</div>');}
+  //end p3 check guess
+  if(differences.p4 == 0){
+    $('#feedback').append('<div>Player 4 WINS!!!</div>');}
+    else if (differences.p4 > 0){
+    $('#feedback').append('<div>Player 4 Guessed too high</div>');}
+  else {
+    $('#feedback').append('<div>Player 4 Guessed too low</div>');}
+  //end p4 check guess
+  if (differences.p1 == 0 || differences.p2 == 0 || differences.p3 == 0 || differences.p4 == 0 ){
+    $('#feedback').append("<button id='restart'>Restart</button> ");
+  }//end if check for winner
 }//end printDifferences
 
-function cancel(){
-  $('#feedback').empty();
-  $('#p1').val('');
-  $('#p2').val('');
-  $('#p3').val('');
-  $('#p4').val('');
-  $('#guesses').empty().append('Number of Guesses: 0');
-  $('#playGame').hide();
-  $('#setUpGame').show();
-  counter = 0;
-}//end cancel
+function setUpGame(){
+  $.ajax({
+    type: 'POST',
+    url: '/random',
+    data: {max: maxNumber}
+  }).done(function(response){
+    $('#setUpGame').hide();
+    playGame(response);
+  }).fail(function(response){
+    console.log('We suck', response);
+  }); // end .ajax post
+}

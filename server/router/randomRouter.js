@@ -7,36 +7,14 @@ let max;
 
 router.post('/', function(request, response){
   max = request.body.max;
-  console.log(max, 'max');
-
   ourRandomNumber=randomModule.makeANumber(max);
-  console.log('in randomRouter -- post', ourRandomNumber);
-  // ourRandomNumberObject = {ourRandomNumber: ourRandomNumber};
-  // response.send(ourRandomNumberObject);
   response.sendStatus(200);
-});
-
-
-
+});//end router post randomModule
 
 router.post('/compare', function (request, response){
-  let guess = request.body;
+  let guess = request.body;  
   let ourComparison = compareModule(guess, ourRandomNumber);
-  console.log('/compare router', ourComparison);
   response.send(ourComparison);
-})
-
-
-
-
-
-
-
-
-// router.get('/', function(request, response){
-//   let rando = randomModule.makeANumber(max);
-//   console.log('in randomRouter get', rando);
-//   response.send(rando);
-// })
+})//end router post compare module
 
 module.exports = router;
